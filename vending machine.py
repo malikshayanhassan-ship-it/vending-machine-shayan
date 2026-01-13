@@ -1,3 +1,4 @@
+#shayan`s vending machine
 #inventory setup
 # key is the code, value is [name, price, quantity]
 stock = {
@@ -39,16 +40,16 @@ stock = {
 }
 
 balance = 0.0
-is_on = True # variable to control loop
+is_on = True #variable to control loop.
 
-# function to show the list
+# Function to show the list
 def print_menu():
-    print("\n--- SNACK BOT 3000 ---")
+    print("\n--- Shani`s Vending Machine ---")
     print(f"Current Money: ${balance:.2f}")
     print("-" * 30)
     
     # using for loop to print keys
-    #sorted makes it look nicer
+    #sorted makes it look nicerrr
     for key in sorted(stock.keys()):
         val = stock[key]
         if val[2] > 0:
@@ -56,7 +57,7 @@ def print_menu():
         else:
             print(f"[{key}] {val[0]:<15} - SOLD OUT")
     print("-" * 30)
-    print("Type 'Q' to quit | 'ADD' for cash | 'CHECK' to check unit value")
+    print("Type 'Q' to quit | 'ADD' for cash")
 
 print("Booting up system...")
 
@@ -85,38 +86,17 @@ while is_on:
         except ValueError:
             print("Error: That is not a valid number.")
 
-    # checking unit price (required for zero division error))
-    elif user_input == 'CHECK':
-        code_check = input("Enter code to check avg value: ").strip().upper()
-        if code_check in stock:
-            item_data = stock[code_check]
-            price = item_data[1]
-            qty = item_data[2]
-            
-            #try except block for zero division
+    # HIDDEN ADMIN FEATURE 
+    elif user_input == 'ADMIN':
+        print("\n--- ADMIN DIAGNOSTICS ---")
+        for key in stock:
+            # trying to calculate price per unit
             try:
-                # if qty is 0 it crashes here
-                val_per_unit = price / qty 
-                print(f"Base value index: {val_per_unit:.2f}")
+                per_unit = stock[key][1] / stock[key][2]
+                print(f"{key}: ${per_unit:.2f} per unit")
             except ZeroDivisionError:
-                print("Error: Cannot calculate value for SOLD OUT items (div by 0).")
-        else:
-            print("Invalid code.")
-
-    #buyingg items
-    elif user_input in stock:
-        item_data = stock[user_input]
-        item_name = item_data[0]
-        item_price = item_data[1]
-        item_qty = item_data[2]
-
-        if item_qty <= 0:
-            print("We are out of that.") #Item is gone
-        elif balance < item_price:
-            print("Insufficient money.")
-        else:
-            print(f"Vending {item_name}...")
-            # update variables
+                # catches error if stock is 0
+\            # update variables
             balance = balance - item_price
             stock[user_input][2] = stock[user_input][2] - 1
             
