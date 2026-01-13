@@ -1,9 +1,10 @@
-#shayan`s vending machine
-#inventory setup
+# shayan's vending machine
+# inventory setup
 # key is the code, value is [name, price, quantity]
+
 stock = {
     "A1": ["Chips", 1.50, 5],
-    "B2": ["Biscuits", 2.00, 3], 
+    "B2": ["Biscuits", 2.00, 3],
     "C3": ["Cola", 1.25, 10],
     "D4": ["Protein Bar", 5.00, 1],
     "E5": ["Milkshake", 1.00, 20],
@@ -21,7 +22,7 @@ stock = {
     "Q17": ["Red Apple", 1.20, 5],
     "R18": ["Trail Mix", 2.75, 8],
     "S19": ["Beef Jerky", 4.50, 6],
-    "T20": ["Popcorn", 2.00, 4], 
+    "T20": ["Popcorn", 2.00, 4],
     "U21": ["Pretzels", 1.50, 8],
     "V22": ["Root Beer", 1.50, 12],
     "W23": ["Lemonade", 2.00, 9],
@@ -36,36 +37,39 @@ stock = {
     "FF32": ["Cold Brew", 4.00, 5],
     "GG33": ["Coco Water", 3.50, 6],
     "HH34": ["Sandwich", 5.50, 3],
-    "Z99": ["Mystery Bar", 0.50, 1] 
+    "Z99": ["Mystery Bar", 0.50, 1]
 }
 
 balance = 0.0
-is_on = True #variable to control loop.
+is_on = True  # variable to control loop
 
-# Function to show the list
+
+# function to show the list
 def print_menu():
-    print("\n--- Shani`s Vending Machine ---")
+    print("\n--- Shani's Vending Machine ---")
     print(f"Current Money: ${balance:.2f}")
     print("-" * 30)
-    
+
     # using for loop to print keys
-    #sorted makes it look nicerrr
+    # sorted makes it look nicer
     for key in sorted(stock.keys()):
         val = stock[key]
         if val[2] > 0:
             print(f"[{key}] {val[0]:<15} - ${val[1]:.2f}")
         else:
             print(f"[{key}] {val[0]:<15} - SOLD OUT")
+
     print("-" * 30)
     print("Type 'Q' to quit | 'ADD' for cash")
+
 
 print("Booting up system...")
 
 # main loop starts here
 while is_on:
     print_menu()
-    
-    # getting user input and removing spacess
+
+    # getting user input and removing spaces
     user_input = input("Enter selection: ").strip().upper()
 
     # if else block for options
@@ -73,8 +77,8 @@ while is_on:
         if balance > 0:
             print(f"Dispensing change: ${balance:.2f}")
         print("Cya later!")
-        is_on = False #stop the loop
-    
+        is_on = False  # stop the loop
+
     elif user_input == 'ADD':
         # trial method for number error
         try:
@@ -82,11 +86,11 @@ while is_on:
             if amt <= 0:
                 print("Amount must be positive.")
             else:
-                balance = balance + amt # add to balence
+                balance = balance + amt  # add to balance
         except ValueError:
             print("Error: That is not a valid number.")
 
-    # HIDDEN ADMIN FEATURE 
+    # HIDDEN ADMIN FEATURE
     elif user_input == 'ADMIN':
         print("\n--- ADMIN DIAGNOSTICS ---")
         for key in stock:
@@ -96,11 +100,29 @@ while is_on:
                 print(f"{key}: ${per_unit:.2f} per unit")
             except ZeroDivisionError:
                 # catches error if stock is 0
-\            # update variables
+                print(f"{key}: ERROR (Stock is 0)")
+
+    # buying items
+    elif user_input in stock:
+        item_data = stock[user_input]
+        item_name = item_data[0]
+        item_price = item_data[1]
+        item_qty = item_data[2]
+
+        if item_qty <= 0:
+            print("We are out of that.")
+        elif balance < item_price:
+            # calculate missing amount
+            needed = item_price - balance
+            print(f"Insufficient money. You need ${needed:.2f} more.")
+        else:
+            print(f"Vending {item_name}...")
+            # update variables
             balance = balance - item_price
             stock[user_input][2] = stock[user_input][2] - 1
-            
+
             if item_name == "Mystery Bar":
                 print("Good luck with that one...")
+
     else:
         print("Invalid code.")
