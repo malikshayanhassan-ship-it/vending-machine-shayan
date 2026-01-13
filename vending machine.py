@@ -41,7 +41,7 @@ stock = {
 }
 
 balance = 0.0
-is_on = True  # variable to control loop
+is_on = True  #variable to control loop
 
 
 # function to show the list
@@ -50,7 +50,7 @@ def print_menu():
     print(f"Current Money: ${balance:.2f}")
     print("-" * 30)
 
-    # using for loop to print keys
+    # using for loop to print keysss
     # sorted makes it look nicer
     for key in sorted(stock.keys()):
         val = stock[key]
@@ -69,7 +69,7 @@ print("Booting up system...")
 while is_on:
     print_menu()
 
-    # getting user input and removing spaces
+    # Getting user input and removing spaces
     user_input = input("Enter selection: ").strip().upper()
 
     # if else block for options
@@ -102,7 +102,7 @@ while is_on:
                 # catches error if stock is 0
                 print(f"{key}: ERROR (Stock is 0)")
 
-    # buying items
+    #  buyinng items
     elif user_input in stock:
         item_data = stock[user_input]
         item_name = item_data[0]
